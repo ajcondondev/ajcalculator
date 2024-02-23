@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-800 flex justify-center items-center h-screen">
+    <div id="calculator" class="grid grid-cols-4 gap-2">
+        <input type="text" id="display" value="0" readonly class="col-span-4 bg-gray-700 text-white py-2 px-3 text-2xl">
+        <!-- Existing buttons -->
+		<button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('1')">1</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('2')">2</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('3')">3</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('+')">+</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('4')">4</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('5')">5</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('6')">6</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('-')">-</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('7')">7</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('8')">8</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('9')">9</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('*')">*</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('.')">.</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('0')">0</button>
+        
+        <!-- "=" and "C" buttons with blue color -->
+        <button class="bg-blue-500 text-white py-2 px-4 text-lg hover:bg-blue-600" onclick="calculateResult()">=</button>
+        <button class="bg-gray-500 text-white py-2 px-4 text-lg hover:bg-gray-600" onclick="pressButton('/')">/</button>
+        <button class="bg-blue-500 text-white py-2 px-4 text-lg hover:bg-blue-600" onclick="clearDisplay()">C</button>
+        <!-- ... -->
+        <!-- Add a mute button -->
+        <button class="bg-red-500 text-white py-2 px-4 text-lg hover:bg-red-600" onclick="toggleSound()">Mute</button>
+    </div>
+    <script>
+        let resultShown = false; // Flag to track if the last action was showing a result
+        let soundEnabled = true; // Flag to control sound playback
+
+        function playSound() {
+            if (soundEnabled) {
+                const sound = new Audio('C:\AJAPP\click.mp3'); // Path to your sound file
+                sound.play();
+            }
+        }
+
+        function pressButton(value) {
+            playSound(); // Play sound on button press
+            const display = document.getElementById('display');
+            if (display.value === '0' || resultShown) {
+                display.value = value;
+                resultShown = false;
+            } else {
+                display.value += value;
+            }
+        }
+        
+        function calculateResult() {
+            playSound(); // Play sound on result calculation
+            const display = document.getElementById('display');
+            try {
+                display.value = eval(display.value);
+                resultShown = true;
+            } catch (e) {
+                display.value = 'Error';
+                setTimeout(() => { clearDisplay(); }, 2000);
+            }
+        }
+
+        function clearDisplay() {
+            playSound(); // Optionally play sound on clear
+            const display = document.getElementById('display');
+            display.value = '0';
+            resultShown = false;
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled; // Toggle the soundEnabled flag
+            // Optionally change the button text to reflect the state
+            this.innerText = soundEnabled ? "Mute" : "Unmute";
+        }
+    </script>
+</body>
+</html>
